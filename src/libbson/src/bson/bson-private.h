@@ -81,7 +81,11 @@ typedef struct {
 } bson_impl_alloc_t BSON_ALIGNED_END (128);
 
 
+#ifdef __CHERI_PURE_CAPABILITY__
+BSON_STATIC_ASSERT2 (impl_alloc_t, sizeof (bson_impl_alloc_t) <= 256);
+#else
 BSON_STATIC_ASSERT2 (impl_alloc_t, sizeof (bson_impl_alloc_t) <= 128);
+#endif
 
 
 BSON_END_DECLS

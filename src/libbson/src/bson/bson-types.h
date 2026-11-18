@@ -321,7 +321,11 @@ typedef enum {
  *--------------------------------------------------------------------------
  */
 
+#ifdef __CHERI_PURE_CAPABILITY__
+BSON_ALIGNED_BEGIN (16)
+#else
 BSON_ALIGNED_BEGIN (8)
+#endif
 typedef struct _bson_value_t {
    bson_type_t value_type;
    int32_t padding;
@@ -375,8 +379,11 @@ typedef struct _bson_value_t {
       } v_symbol;
       bson_decimal128_t v_decimal128;
    } value;
+#ifdef __CHERI_PURE_CAPABILITY__
+} bson_value_t BSON_ALIGNED_END (16);
+#else
 } bson_value_t BSON_ALIGNED_END (8);
-
+#endif
 
 /**
  * bson_iter_t:
@@ -436,7 +443,11 @@ typedef struct {
  * You may pre-maturely stop the visitation of fields by returning true in your
  * visitor. Returning false will continue visitation to further fields.
  */
+#ifdef __CHERI_PURE_CAPABILITY__
+BSON_ALIGNED_BEGIN (16)
+#else
 BSON_ALIGNED_BEGIN (8)
+#endif
 typedef struct {
    /* run before / after descending into a document */
    bool (*visit_before) (const bson_iter_t *iter, const char *key, void *data);
@@ -492,7 +503,11 @@ typedef struct {
                              void *data);
 
    void *padding[7];
+#ifdef __CHERI_PURE_CAPABILITY__
+} bson_visitor_t BSON_ALIGNED_END (16);
+#else
 } bson_visitor_t BSON_ALIGNED_END (8);
+#endif
 
 #define BSON_ERROR_BUFFER_SIZE 504
 
